@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "280630409467",
+    "project_id": "fir-app-8ec1b",
+    "storage_bucket": "fir-app-8ec1b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:280630409467:android:c13e95d7ac46da0a29185e",
+        "android_client_info": {
+          "package_name": "com.example.gamezone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWlKn708Sndja0WLt4N0Y-ie8v-6jjduM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
