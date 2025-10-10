@@ -61,13 +61,13 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.34.0")
 
-    // --- ISPRAVLJEN FIREBASE DEO ---
-
-    // Firebase BoM (on određuje verzije za sve ispod)
+    // Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
 
-    // Biblioteke koje dodajemo BEZ verzije, jer BoM radi posao
+    // Biblioteke koje dodajemo BEZ verzije
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
@@ -83,4 +83,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("com.cloudinary:cloudinary-android:2.5.0")
 }

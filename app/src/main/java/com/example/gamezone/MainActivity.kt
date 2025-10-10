@@ -4,54 +4,82 @@ import android.util.Log
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.gamezone.ui.screen.RegistrationScreen
 import com.example.gamezone.ui.theme.GameZoneTheme
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.auth.ktx.auth
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.gamezone.ui.screen.LoginScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.gamezone.ui.screen.AuthViewModel
+import com.example.gamezone.ui.screen.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        try {
-            val auth = Firebase.auth
-            Log.d("MainActivity", "Firebase Auth initialized: $auth")
-        }
-        catch (e: Exception) {
-            Log.e("MainActivity", "Error initializing Firebase Auth", e)
-        }
+        Log.d("MainActivity", "App pokrenut")
+
         setContent {
             GameZoneTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "login"
+                    ) {
+                        composable("login") { backStackEntry ->
+                            val authViewModel: AuthViewModel = viewModel(backStackEntry)
+
+                            LoginScreen(
+                                authViewModel = authViewModel,
+                                onLoginSuccess = {
+                                    Log.d("MainActivity", "Login uspešan, prelazim na home")
+                                    navController.navigate("home") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
+                                onNavigateToRegistration = {
+                                    Log.d("MainActivity", "Prelazim na registraciju")
+                                    navController.navigate("registration")
+                                }
+                            )
+                        }
+
+                        composable("registration") { backStackEntry ->
+                            val authViewModel: AuthViewModel = viewModel(backStackEntry)
+
+                            RegistrationScreen(
+                                authViewModel = authViewModel,
+                                onRegistrationSuccess = {
+                                    Log.d("MainActivity", "Registracija uspešna, vraćam na login")
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+
+                        composable("home") { backStackEntry ->
+                            val authViewModel: AuthViewModel = viewModel(backStackEntry)
+                            HomeScreen(
+                                authViewModel = authViewModel,
+                                onLogout = {
+                                    Log.d("MainActivity", "Logout, vraćam na login")
+                                    navController.navigate("login") {
+                                        popUpTo(0) { inclusive = true }
+                                    }
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GameZoneTheme {
-        Greeting("Android")
     }
 }
